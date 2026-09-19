@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Redline — AI Car Price Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- background layers -->
+<div class="bg-layer">
+  <div class="bg-grid"></div>
+  <div class="bg-glow bg-glow--copper"></div>
+  <div class="bg-glow bg-glow--cyan"></div>
+</div>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="nav__inner">
+    <div class="nav__mark">
+      <span class="nav__mark-dot"></span>
+      Redline<span class="nav__mark-accent">AI</span>
+    </div>
+    <a href="#predict" class="nav__cta">Start Prediction</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <p class="badge"><span class="badge__spark">✦</span> AI Powered Car Price Predictor</p>
+        <h1 class="hero__title">
+          Predict your car's<br />
+          <span class="hero__title-accent">market value</span> with AI
+        </h1>
+        <p class="hero__desc">
+          Get an intelligent estimated selling price using a machine-learning model
+          trained on real-world car listings — nine details in, one number out.
+        </p>
+        <div class="hero__actions">
+          <a href="#predict" class="btn btn--primary">
+            Start Prediction
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#model-info" class="btn btn--ghost">How it works</a>
+        </div>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="dash">
+          <svg class="dash__ring" viewBox="0 0 240 240">
+            <circle class="dash__track" cx="120" cy="120" r="102" />
+            <circle class="dash__progress" cx="120" cy="120" r="102" />
+          </svg>
+          <div class="dash__center">
+            <span class="dash__label">Est. value</span>
+            <span class="dash__value">₹ <span id="heroTicker">4.85</span> L</span>
+          </div>
+          <div class="dash__tick dash__tick--1"></div>
+          <div class="dash__tick dash__tick--2"></div>
+          <div class="dash__tick dash__tick--3"></div>
+        </div>
+        <div class="hero__card hero__card--1">
+          <span class="hero__card-label">Model</span>
+          <span class="hero__card-value">Random Forest</span>
+        </div>
+        <div class="hero__card hero__card--2">
+          <span class="hero__card-label">Signal</span>
+          <span class="hero__card-value hero__card-value--live"><i></i> Live inference</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODEL INFO STRIP -->
+  <section class="strip" id="model-info">
+    <div class="strip__inner">
+      <div class="strip__item">
+        <span class="strip__k">AI Model</span>
+        <span class="strip__v">Random Forest</span>
+      </div>
+      <div class="strip__div"></div>
+      <div class="strip__item">
+        <span class="strip__k">Predicts</span>
+        <span class="strip__v">Used-car selling price</span>
+      </div>
+      <div class="strip__div"></div>
+      <div class="strip__item">
+        <span class="strip__k">Cross-validation R²</span>
+        <span class="strip__v">≈ 0.89</span>
+      </div>
+      <div class="strip__div"></div>
+      <div class="strip__item">
+        <span class="strip__k">Output</span>
+        <span class="strip__v">Price in Lakhs (₹)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREDICTION FORM -->
+  <section class="predict" id="predict">
+    <div class="predict__inner">
+
+      <div class="predict__intro">
+        <p class="eyebrow">Prediction form</p>
+        <h2 class="predict__title">Tell us about your car</h2>
+        <p class="predict__desc">Enter a few details and our AI model will estimate the selling price.</p>
+      </div>
+
+      <form class="card" id="predictForm" novalidate>
+
+        <!-- SECTION A -->
+        <fieldset class="section">
+          <legend class="section__title">Car information</legend>
+
+          <div class="field field--full">
+            <label class="field__label" for="carName">Car name</label>
+            <div class="field__control">
+              <input
+                class="input"
+                type="text"
+                id="carName"
+                name="carName"
+                placeholder="e.g. swift, city, i20"
+                list="carNameList"
+                autocomplete="off"
+                maxlength="100"
+                required
+              />
+              <datalist id="carNameList"></datalist>
+            </div>
+            <p class="field__help">Enter the car model name as it appears in the training data. Start typing to see suggestions.</p>
+            <p class="field__error" data-error-for="carName"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="mfgYear">Manufactured year</label>
+            <div class="field__control">
+              <input class="input" type="number" id="mfgYear" name="mfgYear" placeholder="2019" min="1975" required />
+            </div>
+            <p class="field__help">Used to work out the car's age automatically.</p>
+            <p class="field__error" data-error-for="mfgYear"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label">Car age</label>
+            <div class="readout">
+              <span class="readout__value" id="carAgeOut">—</span>
+              <span class="readout__badge">Auto-calculated</span>
+            </div>
+            <p class="field__help">Years since manufacture.</p>
+          </div>
+        </fieldset>
+
+        <!-- SECTION B -->
+        <fieldset class="section">
+          <legend class="section__title">Price &amp; usage</legend>
+
+          <div class="field">
+            <label class="field__label" for="presentPrice">Present price</label>
+            <div class="field__control field__control--prefix">
+              <span class="field__affix">₹</span>
+              <input class="input" type="number" id="presentPrice" name="presentPrice" placeholder="5.50" step="0.01" min="0.01" max="1000" required />
+              <span class="field__affix field__affix--suffix">Lakhs</span>
+            </div>
+            <p class="field__help">Current / showroom price of the car in lakhs.</p>
+            <p class="field__error" data-error-for="presentPrice"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label" for="drivenKms">Driven kilometres</label>
+            <div class="field__control field__control--prefix">
+              <input class="input" type="number" id="drivenKms" name="drivenKms" placeholder="45000" step="1" min="0" max="1000000" required />
+              <span class="field__affix field__affix--suffix">km</span>
+            </div>
+            <p class="field__help">Total distance travelled by the car.</p>
+            <p class="field__error" data-error-for="drivenKms"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label">Average usage</label>
+            <div class="readout">
+              <span class="readout__value" id="kmsPerYearOut">—</span>
+              <span class="readout__badge">Auto-calculated</span>
+            </div>
+            <p class="field__help">Driven km ÷ (car age + 1).</p>
+          </div>
+        </fieldset>
+
+        <!-- SECTION C -->
+        <fieldset class="section">
+          <legend class="section__title">Configuration</legend>
+
+          <div class="field field--full">
+            <label class="field__label">Fuel type</label>
+            <div class="choice-grid choice-grid--3" data-choice-group="fuelType">
+              <button type="button" class="choice" data-value="Petrol">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M6 20V6a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14M4 20h12M17 9l2.2 2.2a1.5 1.5 0 0 1 .3.9V17a1.5 1.5 0 0 1-3 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Petrol
+              </button>
+              <button type="button" class="choice" data-value="Diesel">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Diesel
+              </button>
+              <button type="button" class="choice" data-value="CNG">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M8 21c-2-2-3-4-3-6a5 5 0 0 1 5-5c0-3 1-5 3-6 1 2 0 4 1 5 1-1 2-2 2-4 2 2 3 5 3 8a6 6 0 0 1-6 6 4 4 0 0 1-5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                CNG
+              </button>
+            </div>
+            <input type="hidden" id="fuelType" name="fuelType" required />
+            <p class="field__error" data-error-for="fuelType"></p>
+          </div>
+
+          <div class="field field--full">
+            <label class="field__label">Selling type</label>
+            <div class="choice-grid choice-grid--2" data-choice-group="sellingType">
+              <button type="button" class="choice" data-value="Dealer">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 21V10l8-6 8 6v11M9 21v-6h6v6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                Dealer
+              </button>
+              <button type="button" class="choice" data-value="Individual">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Individual
+              </button>
+            </div>
+            <input type="hidden" id="sellingType" name="sellingType" required />
+            <p class="field__error" data-error-for="sellingType"></p>
+          </div>
+
+          <div class="field field--full">
+            <label class="field__label">Transmission</label>
+            <div class="choice-grid choice-grid--2" data-choice-group="transmission">
+              <button type="button" class="choice" data-value="Manual">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v9M12 12l-5 7M12 12l5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="3" r="1.4" fill="currentColor"/></svg>
+                Manual
+              </button>
+              <button type="button" class="choice" data-value="Automatic">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Automatic
+              </button>
+            </div>
+            <input type="hidden" id="transmission" name="transmission" required />
+            <p class="field__error" data-error-for="transmission"></p>
+          </div>
+
+          <div class="field">
+            <label class="field__label">Previous owners</label>
+            <div class="stepper">
+              <button type="button" class="stepper__btn" id="ownerMinus" aria-label="Decrease owners">−</button>
+              <span class="stepper__value" id="ownerValue">0</span>
+              <button type="button" class="stepper__btn" id="ownerPlus" aria-label="Increase owners">+</button>
+            </div>
+            <input type="hidden" id="owner" name="owner" value="0" />
+            <p class="field__help">Number of previous owners (0–5).</p>
+          </div>
+        </fieldset>
+
+        <div class="predict__submit">
+          <button type="submit" class="btn btn--primary btn--large" id="submitBtn">
+            <span class="btn__label">
+              <span class="btn__spark">✦</span> Predict Car Price
+            </span>
+            <span class="btn__loading">
+              <span class="spinner"></span>
+              <span id="loadingText">Analyzing your car…</span>
+            </span>
+          </button>
+          <p class="predict__note">Estimates are AI-generated and are not an official market valuation.</p>
+        </div>
+      </form>
+
+      <!-- RESULT -->
+      <div class="result" id="resultSection" hidden>
+        <div class="card result__card">
+          <p class="result__kicker">AI estimated value</p>
+          <p class="result__amount">₹ <span id="resultNumber">0.00</span> <span class="result__unit">Lakhs</span></p>
+          <p class="result__sub">Based on the details you provided</p>
+
+          <div class="gauge">
+            <div class="gauge__row">
+              <span>Present price</span>
+              <span id="gaugePresent">—</span>
+            </div>
+            <div class="gauge__track">
+              <div class="gauge__fill" id="gaugeFill"></div>
+              <div class="gauge__marker" id="gaugeMarker"></div>
+            </div>
+            <div class="gauge__row">
+              <span>Estimated selling price</span>
+              <span id="gaugeSelling">—</span>
+            </div>
+          </div>
+
+          <div class="result__grid" id="resultDetails"></div>
+
+          <div class="result__actions">
+            <button type="button" class="btn btn--ghost" id="resetBtn">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9M13.5 2v3.1h-3.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Predict another car
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ERROR BANNER -->
+      <div class="error-banner" id="errorBanner" hidden>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6.5v4M10 13.2v.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <div>
+          <p class="error-banner__title" id="errorTitle">Something went wrong</p>
+          <p class="error-banner__desc" id="errorDesc"></p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Redline AI — a machine-learning demo. Predictions are estimates, not valuations.</p>
+</footer>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="script.js"></script>
+</body>
+</html>
