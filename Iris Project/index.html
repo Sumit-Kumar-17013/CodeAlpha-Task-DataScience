@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IRIS VISION — AI-Powered Iris Flower Classification</title>
+  <meta name="description" content="AI-Powered Iris Flower Classification with Support Vector Classifier (SVC) and FastAPI integration" />
+  <meta property="og:title" content="IRIS VISION — AI-Powered Iris Flower Classification" />
+  <meta property="og:description" content="AI-Powered Iris Flower Classification with Support Vector Classifier (SVC) and FastAPI integration" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Atmospheric Ambient Background Lights -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+  <div class="ambient-glow-3"></div>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="brand-logo" id="brandLogo">
+        <div class="brand-glyph">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+            <path d="M12 6c-2.5 2.5-2.5 6.5 0 9 2.5-2.5 2.5-6.5 0-9z"/>
+            <path d="M6 12c2.5-2.5 6.5-2.5 9 0-2.5 2.5-6.5 2.5-9 0z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">IRIS <span>VISION</span></span>
+          <span class="brand-tag">ML CLASSIFIER</span>
+        </div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#predict">Predict</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#about">About Model</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <!-- Live API Status Button -->
+        <button class="api-status-btn" id="apiStatusBtn" title="Click to view FastAPI server connection details">
+          <span class="status-dot offline" id="statusDot"></span>
+          <span id="statusLabel">Checking API...</span>
+        </button>
+
+        <!-- GitHub Icon Link -->
+        <a href="https://github.com" target="_blank" rel="noreferrer" class="github-btn" id="githubBtn" title="GitHub Repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
+            <path d="M9 18c-4.51 2-5-2-7-2"/>
+          </svg>
+        </a>
+
+        <!-- Mobile Nav Toggle -->
+        <button class="mobile-toggle-btn" id="mobileToggleBtn" aria-label="Toggle menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav Drawer -->
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <a href="#hero">Home</a>
+    <a href="#features">Features</a>
+    <a href="#predict">Predict</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#about">About Model</a>
+  </div>
+
+  <!-- Hero Section -->
+  <header class="hero-section" id="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Hero Text -->
+        <div class="hero-content">
+          <div class="badge" id="heroBadge">
+            <span class="badge-pulse"></span>
+            FASTAPI + MACHINE LEARNING
+          </div>
+
+          <h1 class="hero-heading" id="heroHeading">
+            Understand <span class="serif-italic">Every</span><br />
+            <span class="petal-underline">Petal.</span>
+          </h1>
+
+          <p class="hero-desc" id="heroDesc">
+            Classify Iris flower species with botanical precision. Powered by a trained Support Vector Classifier (SVC) and a high-performance FastAPI inference engine.
+          </p>
+
+          <div class="hero-actions" id="heroActions">
+            <a href="#predict" class="btn-primary" id="btnStartPrediction">
+              <span>Start Prediction</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+            <a href="#about" class="btn-secondary" id="btnExploreModel">
+              <span>Explore Model</span>
+            </a>
+          </div>
+
+          <div class="hero-stats" id="heroStats">
+            <div>
+              <div class="stat-val amber">4</div>
+              <div class="stat-label">Biometric Features</div>
+            </div>
+            <div>
+              <div class="stat-val">3</div>
+              <div class="stat-label">Iris Species</div>
+            </div>
+            <div>
+              <div class="stat-val cyan">&lt; 15ms</div>
+              <div class="stat-label">Inference Latency</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Futuristic Interactive Hero Visual (3D Tilt) -->
+        <div class="hero-visual-wrapper" id="heroVisualWrapper">
+          <div class="visual-3d-scene" id="visual3dScene">
+            <div class="ambient-visual-glow"></div>
+            <div class="orbital-ring orbital-ring-1"></div>
+            <div class="orbital-ring orbital-ring-2"></div>
+            <div class="orbital-ring orbital-ring-3"></div>
+
+            <!-- Floating Telemetry Badges -->
+            <div class="telemetry-badge badge-top-left" id="badgeSepal">
+              <span class="tele-dot amber"></span>
+              <div>
+                <div class="tele-label">Sepal Vector</div>
+                <div class="tele-val">5.1 × 3.5 cm</div>
+              </div>
+            </div>
+
+            <div class="telemetry-badge badge-bottom-right" id="badgePetal">
+              <span class="tele-dot cyan"></span>
+              <div>
+                <div class="tele-label">Petal Vector</div>
+                <div class="tele-val">1.4 × 0.2 cm</div>
+              </div>
+            </div>
+
+            <div class="telemetry-badge badge-mid-left" id="badgeKernel">
+              <span>SVC • RBF Kernel</span>
+            </div>
+
+            <!-- Glowing Botanical Iris Flower Illustration -->
+            <div class="iris-svg-container" id="irisSvgContainer">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="petalGlowAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fef08a" stop-opacity="0.9" />
+                    <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.75" />
+                    <stop offset="100%" stop-color="#b45309" stop-opacity="0.3" />
+                  </linearGradient>
+                  <linearGradient id="petalGlowPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#e9d5ff" stop-opacity="0.9" />
+                    <stop offset="60%" stop-color="#a855f7" stop-opacity="0.7" />
+                    <stop offset="100%" stop-color="#6b21a8" stop-opacity="0.2" />
+                  </linearGradient>
+                  <linearGradient id="petalGlowCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#bae6fd" stop-opacity="0.95" />
+                    <stop offset="70%" stop-color="#0284c7" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#0369a1" stop-opacity="0.2" />
+                  </linearGradient>
+                  <radialGradient id="flowerCoreGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
+                    <stop offset="40%" stop-color="#fde047" stop-opacity="0.8" />
+                    <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+                  </radialGradient>
+                </defs>
+
+                <!-- Sepals (Outer Falls) -->
+                <path d="M 100,100 C 70,140 50,165 40,145 C 30,125 60,95 100,100 Z" fill="url(#petalGlowPurple)" stroke="rgba(255,255,255,0.3)" stroke-width="0.75"/>
+                <path d="M 100,100 C 130,140 150,165 160,145 C 170,125 140,95 100,100 Z" fill="url(#petalGlowCyan)" stroke="rgba(255,255,255,0.3)" stroke-width="0.75"/>
+                <path d="M 100,100 C 85,150 100,185 100,185 C 100,185 115,150 100,100 Z" fill="url(#petalGlowAmber)" stroke="rgba(255,255,255,0.35)" stroke-width="0.75"/>
+
+                <!-- Petals (Inner Standards) -->
+                <path d="M 100,100 C 80,60 75,30 100,20 C 125,30 120,60 100,100 Z" fill="url(#petalGlowAmber)" stroke="rgba(255,255,255,0.4)" stroke-width="0.75"/>
+                <path d="M 100,100 C 65,80 40,65 55,45 C 70,25 90,65 100,100 Z" fill="url(#petalGlowPurple)" stroke="rgba(255,255,255,0.3)" stroke-width="0.75"/>
+                <path d="M 100,100 C 135,80 160,65 145,45 C 130,25 110,65 100,100 Z" fill="url(#petalGlowCyan)" stroke="rgba(255,255,255,0.3)" stroke-width="0.75"/>
+
+                <!-- Bioluminescent Core & Stamen Nodes -->
+                <circle cx="100" cy="100" r="14" fill="url(#flowerCoreGlow)"/>
+                <circle cx="100" cy="100" r="4" fill="#ffffff"/>
+                <circle cx="92" cy="94" r="1.5" fill="#fde68a"/>
+                <circle cx="108" cy="94" r="1.5" fill="#fde68a"/>
+                <circle cx="100" cy="110" r="1.5" fill="#fde68a"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Feature Highlights (01 - 04) -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="features-grid">
+        <!-- 01 FOUR FEATURES -->
+        <div class="feature-card c1" id="featureCard1">
+          <div class="feature-header">
+            <span class="feature-num">01</span>
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+          </div>
+          <h3 class="feature-title">FOUR FEATURES</h3>
+          <p class="feature-desc">Uses four flower measurements.</p>
+          <p class="feature-detail">Captures sepal length, sepal width, petal length, and petal width as numerical biometric vectors.</p>
+        </div>
+
+        <!-- 02 ML POWERED -->
+        <div class="feature-card c2" id="featureCard2">
+          <div class="feature-header">
+            <span class="feature-num">02</span>
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+          </div>
+          <h3 class="feature-title">ML POWERED</h3>
+          <p class="feature-desc">Prediction from a trained machine learning model.</p>
+          <p class="feature-detail">Trained Support Vector Classifier utilizing radial basis kernel functions to demarcate species boundaries.</p>
+        </div>
+
+        <!-- 03 FAST API -->
+        <div class="feature-card c3" id="featureCard3">
+          <div class="feature-header">
+            <span class="feature-num">03</span>
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+          </div>
+          <h3 class="feature-title">FAST API</h3>
+          <p class="feature-desc">Real-time prediction through FastAPI.</p>
+          <p class="feature-detail">Lightweight, asynchronous Python server delivering microsecond latency and strict Pydantic validation.</p>
+        </div>
+
+        <!-- 04 INSTANT RESULT -->
+        <div class="feature-card c4" id="featureCard4">
+          <div class="feature-header">
+            <span class="feature-num">04</span>
+            <div class="feature-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+          <h3 class="feature-title">INSTANT RESULT</h3>
+          <p class="feature-desc">Get the predicted species immediately.</p>
+          <p class="feature-detail">Dynamic feedback with calculated model confidence, class distribution, and botanical traits.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prediction Section (Form & Result) -->
+  <section class="predict-section" id="predict">
+    <div class="container">
+      <div class="predict-container">
+        
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 28px;">
+          <div class="section-tag">
+            <span class="badge-pulse"></span>
+            REAL-TIME INFERENCE
+          </div>
+          <h2 class="section-title">Predict Your Iris</h2>
+          <p class="section-subtitle">Enter the flower measurements below to classify the species.</p>
+        </div>
+
+        <!-- Presets -->
+        <div class="presets-card">
+          <div class="presets-header">
+            <span>Quick Sample Presets:</span>
+            <span>Click to autofill known species</span>
+          </div>
+          <div class="presets-grid">
+            <button type="button" class="preset-btn" data-preset="setosa">
+              Setosa Sample
+              <div class="preset-sub">5.1 / 3.5 / 1.4 / 0.2</div>
+            </button>
+            <button type="button" class="preset-btn" data-preset="versicolor">
+              Versicolor Sample
+              <div class="preset-sub">6.0 / 2.7 / 5.1 / 1.6</div>
+            </button>
+            <button type="button" class="preset-btn" data-preset="virginica">
+              Virginica Sample
+              <div class="preset-sub">6.5 / 3.0 / 5.5 / 1.8</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Prediction Form -->
+        <form class="glass-panel" id="predictionForm" style="padding: 36px;" novalidate>
+          <div class="inputs-grid">
+            
+            <!-- 1. Sepal Length -->
+            <div class="input-box" id="boxSepalLength">
+              <div class="input-label-row">
+                <label for="sepalLength" class="input-label">Sepal Length</label>
+                <span class="input-hint">Range: 4.0 - 8.0</span>
+              </div>
+              <div class="input-field-wrap">
+                <input type="number" id="sepalLength" class="num-input" value="5.1" min="0.1" max="15" step="0.1" required />
+                <span class="unit-tag">cm</span>
+              </div>
+              <input type="range" id="sepalLengthRange" class="range-slider" value="5.1" min="4.0" max="8.0" step="0.1" />
+              <div class="range-labels">
+                <span>4.0</span>
+                <span>6.0</span>
+                <span>8.0</span>
+              </div>
+            </div>
+
+            <!-- 2. Sepal Width -->
+            <div class="input-box" id="boxSepalWidth">
+              <div class="input-label-row">
+                <label for="sepalWidth" class="input-label">Sepal Width</label>
+                <span class="input-hint">Range: 2.0 - 4.5</span>
+              </div>
+              <div class="input-field-wrap">
+                <input type="number" id="sepalWidth" class="num-input" value="3.5" min="0.1" max="10" step="0.1" required />
+                <span class="unit-tag">cm</span>
+              </div>
+              <input type="range" id="sepalWidthRange" class="range-slider" value="3.5" min="2.0" max="4.5" step="0.1" />
+              <div class="range-labels">
+                <span>2.0</span>
+                <span>3.2</span>
+                <span>4.5</span>
+              </div>
+            </div>
+
+            <!-- 3. Petal Length -->
+            <div class="input-box" id="boxPetalLength">
+              <div class="input-label-row">
+                <label for="petalLength" class="input-label">Petal Length</label>
+                <span class="input-hint">Range: 1.0 - 7.0</span>
+              </div>
+              <div class="input-field-wrap">
+                <input type="number" id="petalLength" class="num-input" value="1.4" min="0.1" max="15" step="0.1" required />
+                <span class="unit-tag">cm</span>
+              </div>
+              <input type="range" id="petalLengthRange" class="range-slider" value="1.4" min="1.0" max="7.0" step="0.1" />
+              <div class="range-labels">
+                <span>1.0</span>
+                <span>4.0</span>
+                <span>7.0</span>
+              </div>
+            </div>
+
+            <!-- 4. Petal Width -->
+            <div class="input-box" id="boxPetalWidth">
+              <div class="input-label-row">
+                <label for="petalWidth" class="input-label">Petal Width</label>
+                <span class="input-hint">Range: 0.1 - 2.5</span>
+              </div>
+              <div class="input-field-wrap">
+                <input type="number" id="petalWidth" class="num-input" value="0.2" min="0.1" max="6" step="0.1" required />
+                <span class="unit-tag">cm</span>
+              </div>
+              <input type="range" id="petalWidthRange" class="range-slider" value="0.2" min="0.1" max="2.5" step="0.1" />
+              <div class="range-labels">
+                <span>0.1</span>
+                <span>1.3</span>
+                <span>2.5</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div class="error-banner" id="errorBanner">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorText">Please enter valid biometric numbers.</span>
+          </div>
+
+          <!-- Predict Button -->
+          <button type="submit" class="btn-predict" id="predictBtn">
+            <span id="predictBtnText">Predict Species</span>
+            <svg id="predictBtnIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+
+          <div class="endpoint-caption">
+            Transmits JSON to FastAPI <code>POST /prediction</code> with live local verification.
+          </div>
+        </form>
+
+        <!-- Prediction Result Card (Revealed on predict) -->
+        <div class="glass-panel result-card" id="resultCard">
+          <div class="result-header">
+            <span class="species-super-title">PREDICTED SPECIES</span>
+            <span class="glass-pill" style="padding: 4px 12px; font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-amber-light);">SVC MODEL OUTPUT</span>
+          </div>
+
+          <div class="result-species-hero">
+            <h3 class="species-title" id="resultSpeciesName">Iris Setosa</h3>
+            <p class="species-common-name" id="resultCommonName">Taxonomic classification: Iris-setosa</p>
+            <p class="model-source-line" id="resultSourceLine">
+              Prediction generated by the trained SVC machine learning model.
+            </p>
+          </div>
+
+          <!-- Confidence Meter & Probabilities -->
+          <div class="confidence-box">
+            <div class="conf-row">
+              <span class="conf-label">Model Confidence</span>
+              <span class="conf-val" id="resultConfidenceVal">99.2%</span>
+            </div>
+            <div class="conf-bar-track">
+              <div class="conf-bar-fill" id="resultConfidenceBar"></div>
+            </div>
+
+            <!-- Probability breakdown across 3 classes -->
+            <div class="prob-dist-grid">
+              <div class="prob-cell" data-prob-species="Iris-setosa">
+                <div class="prob-name">Setosa</div>
+                <div class="prob-pct" id="probSetosa">99.2%</div>
+              </div>
+              <div class="prob-cell" data-prob-species="Iris-versicolor">
+                <div class="prob-name">Versicolor</div>
+                <div class="prob-pct" id="probVersicolor">0.7%</div>
+              </div>
+              <div class="prob-cell" data-prob-species="Iris-virginica">
+                <div class="prob-name">Virginica</div>
+                <div class="prob-pct" id="probVirginica">0.1%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botanical Profile & Traits -->
+          <div class="botanical-info">
+            <div class="botanical-title">Botanical Description & Distinctive Traits</div>
+            <p class="botanical-desc" id="resultBotanicalDesc">
+              Characterized by exceptionally short, narrow petals and prominent, broad sepals. Iris setosa is typically found in sub-arctic maritime climates and cold northern regions.
+            </p>
+            <div class="traits-pills" id="resultTraitsPills">
+              <!-- Dynamically filled -->
+            </div>
+          </div>
+
+          <!-- Analyzed Measurements Recap -->
+          <div class="measurements-recap">
+            <div class="recap-label">Analyzed Flower Measurements</div>
+            <div class="recap-grid">
+              <div class="recap-item">
+                <div class="recap-item-title">Sepal Length</div>
+                <div class="recap-item-val" id="recapSl">5.1 cm</div>
+              </div>
+              <div class="recap-item">
+                <div class="recap-item-title">Sepal Width</div>
+                <div class="recap-item-val" id="recapSw">3.5 cm</div>
+              </div>
+              <div class="recap-item">
+                <div class="recap-item-title">Petal Length</div>
+                <div class="recap-item-val" id="recapPl">1.4 cm</div>
+              </div>
+              <div class="recap-item">
+                <div class="recap-item-title">Petal Width</div>
+                <div class="recap-item-val" id="recapPw">0.2 cm</div>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-again" id="predictAgainBtn">
+            ← Predict Another Flower
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works-section" id="how-it-works">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 50px;">
+        <div class="section-tag">
+          <span class="badge-pulse"></span>
+          WORKFLOW PIPELINE
+        </div>
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">A seamless journey from botanical measurements to machine learning classification.</p>
+      </div>
+
+      <div class="steps-grid">
+        <!-- 01 -->
+        <div class="step-card" id="step1">
+          <div>
+            <div class="step-header">
+              <span class="step-badge">STEP 01</span>
+              <span class="step-tag">INPUT</span>
+            </div>
+            <div class="step-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <h3 class="step-title">Enter Measurements</h3>
+            <div class="step-subtitle">Sepal & Petal Dimensions</div>
+            <p class="step-desc">Input four precise biometric measurements: sepal length, sepal width, petal length, and petal width in centimeters.</p>
+          </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="step-card" id="step2">
+          <div>
+            <div class="step-header">
+              <span class="step-badge">STEP 02</span>
+              <span class="step-tag">API REQUEST</span>
+            </div>
+            <div class="step-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3 class="step-title">FastAPI Processes Data</h3>
+            <div class="step-subtitle">Pydantic Validation</div>
+            <p class="step-desc">FastAPI receives the JSON payload, validates the schema with Pydantic, and feeds the numerical array into the pipeline.</p>
+          </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="step-card" id="step3">
+          <div>
+            <div class="step-header">
+              <span class="step-badge">STEP 03</span>
+              <span class="step-tag">ML INFERENCE</span>
+            </div>
+            <div class="step-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3 class="step-title">SVC Model Predicts</h3>
+            <div class="step-subtitle">Support Vector Machine</div>
+            <p class="step-desc">The trained Support Vector Classifier maps the measurements in higher-dimensional feature space to determine the hyperplane boundary.</p>
+          </div>
+        </div>
+
+        <!-- 04 -->
+        <div class="step-card" id="step4">
+          <div>
+            <div class="step-header">
+              <span class="step-badge">STEP 04</span>
+              <span class="step-tag">OUTPUT</span>
+            </div>
+            <div class="step-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h3 class="step-title">Species Result</h3>
+            <div class="step-subtitle">Instant Botanical Profile</div>
+            <p class="step-desc">The client visualizes the final classification along with confidence percentage, botanical summary, and probability breakdown.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Model Section -->
+  <section class="about-section" id="about">
+    <div class="container">
+      <div class="glass-panel about-card" id="aboutCard">
+        <div style="text-align: center; margin-bottom: 36px;">
+          <div class="section-tag">
+            <span class="badge-pulse"></span>
+            SYSTEM ARCHITECTURE
+          </div>
+          <h2 class="section-title">About the Iris Classifier</h2>
+          <p class="section-subtitle">Technical specifications and machine learning architecture.</p>
+        </div>
+
+        <div class="specs-grid">
+          <div class="spec-cell">
+            <div class="spec-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
+            </div>
+            <div>
+              <div class="spec-label">Model Architecture</div>
+              <div class="spec-val">Support Vector Classifier (SVC)</div>
+            </div>
+          </div>
+
+          <div class="spec-cell">
+            <div class="spec-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <div>
+              <div class="spec-label">Input Features</div>
+              <div class="spec-val">4 Biometric Variables</div>
+            </div>
+          </div>
+
+          <div class="spec-cell">
+            <div class="spec-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+            </div>
+            <div>
+              <div class="spec-label">Output Classes</div>
+              <div class="spec-val">3 Iris Species</div>
+            </div>
+          </div>
+
+          <div class="spec-cell">
+            <div class="spec-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div>
+              <div class="spec-label">Benchmark Dataset</div>
+              <div class="spec-val">Fisher's Iris Dataset</div>
+            </div>
+          </div>
+
+          <div class="spec-cell">
+            <div class="spec-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div>
+              <div class="spec-label">Backend Server</div>
+              <div class="spec-val">FastAPI + Uvicorn (main.py)</div>
+            </div>
+          </div>
+
+          <div class="spec-cell">
+            <div class="spec-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <div>
+              <div class="spec-label">Frontend Stack</div>
+              <div class="spec-val">Pure Vanilla HTML, CSS &amp; JS</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-notes">
+          <p>
+            The Iris classification problem is a seminal benchmark in pattern recognition and machine learning introduced by British biologist and statistician Ronald Fisher in 1936.
+          </p>
+          <p class="about-disclaimer">
+            * Note: The classifier utilizes radial basis kernel optimization to separate multi-class decision surfaces without overfitting. No synthetic accuracy metrics are fabricated.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="brand-glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/>
+              <path d="M12 6c-2.5 2.5-2.5 6.5 0 9 2.5-2.5 2.5-6.5 0-9z"/>
+            </svg>
+          </div>
+          <span style="font-weight: 700; color: #fff;">IRIS VISION</span>
+        </div>
+
+        <div class="footer-links">
+          <a href="#hero">Home</a>
+          <a href="#features">Features</a>
+          <a href="#predict">Predict</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#about">About</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; IRIS VISION. Pure Vanilla HTML, CSS, and JavaScript. Backend main.py powered by FastAPI.</div>
+        <div style="color: var(--color-amber-light);">Trained SVC Classifier</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- API Diagnostics & Connection Modal -->
+  <div class="modal-overlay" id="apiModal">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-header">
+        <div class="modal-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="modal-title">FastAPI Diagnostic</div>
+          <div class="modal-subtitle">Local Backend Configuration</div>
+        </div>
+      </div>
+
+      <div class="modal-status-strip">
+        <div class="status-left">
+          <span class="status-dot offline"></span>
+          <div>
+            <div class="status-title" id="modalStatusTitle">FastAPI Connection</div>
+            <div class="status-sub" id="modalStatusSub">Target: 127.0.0.1:8000</div>
+          </div>
+        </div>
+        <button type="button" class="btn-check-ping" id="checkPingBtn">Ping API</button>
+      </div>
+
+      <div class="url-setting">
+        <label for="apiUrlInput" class="url-label">Backend Base URL:</label>
+        <div class="url-input-wrap">
+          <input type="text" id="apiUrlInput" class="url-input" value="http://127.0.0.1:8000" />
+          <button type="button" class="btn-reset-url" id="resetUrlBtn">Reset</button>
+        </div>
+      </div>
+
+      <div class="endpoint-info-box">
+        <div class="info-line"><span>Health check:</span> <span>GET /health</span></div>
+        <div class="info-line"><span>Inference route:</span> <span>POST /prediction</span></div>
+        <div class="info-line"><span>Current endpoint:</span> <span id="currentUrlDisplay">http://127.0.0.1:8000</span></div>
+      </div>
+
+      <div class="modal-notice warning" id="modalNotice">
+        To connect to your live Python model, ensure you run <code>uvicorn main:app --reload</code> in your terminal.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-done" id="modalDoneBtn">Save &amp; Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/script.js"></script>
+</body>
+</html>

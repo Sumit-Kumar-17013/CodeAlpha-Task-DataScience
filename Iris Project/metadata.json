@@ -1,0 +1,6 @@
+{
+  "name": "IRIS VISION",
+  "description": "AI-Powered Iris Flower Classification with Support Vector Classifier (SVC) and FastAPI integration",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
