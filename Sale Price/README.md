@@ -333,10 +333,10 @@ Areas of Interest
 🔗 Connect With Me
 
 🐙 GitHub:
-Sumit Kumar — GitHub
+Sumit Kumar — https://github.com/Sumit-Kumar-17013/CodeAlpha-Task-DataScience/edit/main/Sale%20Price
 
 💼 LinkedIn:
-Add your LinkedIn profile here.
+https://www.linkedin.com/in/sumit-kumar-983679393/
 
 ⭐ Acknowledgement
 
