@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SalesAI — Intelligent Advertising Sales Prediction</title>
+<meta name="description" content="SalesAI predicts sales from TV, Radio and Newspaper advertising spend using a trained machine learning regression pipeline served by a FastAPI backend." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="bg-grid" aria-hidden="true"></div>
+
+<!-- ============ NAVIGATION ============ -->
+<header class="topnav">
+  <div class="topnav__inner">
+    <a href="#top" class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="22" height="22" fill="none"><path d="M4 24 L12 14 L18 19 L28 6" stroke="url(#navGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="28" cy="6" r="2.4" fill="#38bdf8"/><defs><linearGradient id="navGrad" x1="4" y1="24" x2="28" y2="6"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs></svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">SalesAI</span>
+        <span class="brand__sub">Advertising Sales Intelligence</span>
+      </span>
+    </a>
+
+    <nav class="topnav__links" aria-label="Primary">
+      <a href="#predict">Prediction</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#model">Model</a>
+      <a href="#status">API Status</a>
+    </nav>
+
+    <div class="topnav__status" id="navStatus" aria-live="polite">
+      <span class="status-dot status-dot--pending" id="navStatusDot"></span>
+      <span id="navStatusText">Checking…</span>
+    </div>
+
+    <button class="topnav__burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav id="mobileNav" class="mobile-nav" aria-label="Mobile">
+    <a href="#predict">Prediction</a>
+    <a href="#analytics">Analytics</a>
+    <a href="#model">Model</a>
+    <a href="#status">API Status</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <canvas id="heroCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+    <div class="hero__inner">
+      <span class="badge">AI POWERED · REGRESSION MODEL</span>
+      <h1 class="hero__title">Predict sales from<br/>your ad spend.</h1>
+      <p class="hero__lead">
+        Estimate sales from TV, Radio and Newspaper advertising spend using a
+        trained regression pipeline. Enter a budget across the three channels
+        — the model handles the rest.
+      </p>
+      <div class="hero__actions">
+        <a href="#predict" class="btn btn--primary">
+          Start a prediction
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#model" class="btn btn--ghost">View model details</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="shell">
+
+    <!-- ============ PREDICTION WORKSPACE ============ -->
+    <section id="predict" class="workspace">
+      <div class="grid-2col">
+
+        <!-- Prediction form card -->
+        <div class="card card--form glass" data-animate>
+          <div class="card__head">
+            <h2>Sales Prediction</h2>
+            <p>Enter your advertising spend across channels to generate a prediction.</p>
+          </div>
+
+          <form id="predictForm" novalidate>
+            <div class="field-grid field-grid--3col">
+
+              <div class="field">
+                <label for="TV">TV Advertising Spend</label>
+                <div class="field__control">
+                  <span class="field__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><rect x="3" y="6" width="18" height="12" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M9 21h6M12 18v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  </span>
+                  <input type="number" id="TV" name="TV" placeholder="230.1" min="0" step="0.1" inputmode="decimal" required />
+                </div>
+                <span class="field__hint">Amount spent on TV advertising.</span>
+                <span class="field__error" data-error-for="TV"></span>
+              </div>
+
+              <div class="field">
+                <label for="Radio">Radio Advertising Spend</label>
+                <div class="field__control">
+                  <span class="field__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><circle cx="8" cy="15" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M5 6l14-3-2 6M4 11h16v8a1 1 0 0 1-1 1h-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                  <input type="number" id="Radio" name="Radio" placeholder="37.8" min="0" step="0.1" inputmode="decimal" required />
+                </div>
+                <span class="field__hint">Amount spent on radio advertising.</span>
+                <span class="field__error" data-error-for="Radio"></span>
+              </div>
+
+              <div class="field">
+                <label for="Newspaper">Newspaper Advertising Spend</label>
+                <div class="field__control">
+                  <span class="field__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M4 5h13a2 2 0 0 1 2 2v11a1 1 0 0 1-1.6.8L15 17H5a1 1 0 0 1-1-1V5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 9h7M7 12h7M7 15h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  </span>
+                  <input type="number" id="Newspaper" name="Newspaper" placeholder="69.2" min="0" step="0.1" inputmode="decimal" required />
+                </div>
+                <span class="field__hint">Amount spent on newspaper advertising.</span>
+                <span class="field__error" data-error-for="Newspaper"></span>
+              </div>
+
+            </div>
+
+            <div class="form__footer">
+              <button type="submit" class="btn btn--primary btn--block" id="predictBtn">
+                <span class="btn__label">Predict Sales</span>
+                <span class="btn__spinner" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="btn btn--text" id="resetBtn">Reset form</button>
+            </div>
+            <p class="loading-status" id="loadingStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <!-- Sidebar: status + model -->
+        <div class="sidebar">
+
+          <div class="card glass" id="status" data-animate>
+            <div class="card__head card__head--row">
+              <h3>API Health</h3>
+              <span class="status-dot status-dot--pending" id="healthDot"></span>
+            </div>
+            <dl class="kv" id="healthBody">
+              <div class="kv__row"><dt>API Status</dt><dd id="healthStatus">Checking…</dd></div>
+              <div class="kv__row"><dt>Model Loaded</dt><dd id="healthModelLoaded">—</dd></div>
+              <div class="kv__row"><dt>Backend</dt><dd>FastAPI</dd></div>
+            </dl>
+            <p class="inline-error" id="healthError" hidden>
+              Unable to connect to the Sales Prediction API. Make sure FastAPI is running.
+            </p>
+          </div>
+
+          <div class="card glass" id="model" data-animate>
+            <div class="card__head">
+              <h3>Model Information</h3>
+            </div>
+            <dl class="kv" id="modelBody">
+              <div class="kv__row"><dt>Model</dt><dd id="modelName">—</dd></div>
+              <div class="kv__row"><dt>Target</dt><dd id="modelTarget">—</dd></div>
+            </dl>
+            <div class="chip-row" id="featureChips" aria-hidden="true"></div>
+            <div class="pipeline-mini" id="pipelineSteps" aria-hidden="true"></div>
+            <div class="metrics-grid" id="metricsGrid" hidden></div>
+            <p class="inline-error" id="modelError" hidden>Model information is unavailable right now.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PIPELINE VISUALIZATION ============ -->
+    <section class="pipeline" aria-label="Prediction pipeline">
+      <h3 class="section-label">How a prediction runs</h3>
+      <div class="pipeline__flow" id="pipelineFlow">
+        <div class="pipeline__node" data-step="0"><span class="pipeline__dot"></span><span>Raw Input</span></div>
+        <div class="pipeline__line"><span class="pipeline__pulse"></span></div>
+        <div class="pipeline__node" data-step="1"><span class="pipeline__dot"></span><span>Preprocessing</span></div>
+        <div class="pipeline__line"><span class="pipeline__pulse"></span></div>
+        <div class="pipeline__node" data-step="2"><span class="pipeline__dot"></span><span>Feature Transform</span></div>
+        <div class="pipeline__line"><span class="pipeline__pulse"></span></div>
+        <div class="pipeline__node" data-step="3"><span class="pipeline__dot"></span><span>Regression Model</span></div>
+        <div class="pipeline__line"><span class="pipeline__pulse"></span></div>
+        <div class="pipeline__node" data-step="4"><span class="pipeline__dot"></span><span>Sales Prediction</span></div>
+      </div>
+    </section>
+
+    <!-- ============ RESULT ============ -->
+    <section class="result" id="resultSection" hidden>
+      <div class="card card--result glass" data-animate>
+        <div class="result__head">
+          <h2>Predicted Sales</h2>
+          <span class="chip chip--estimate">Model-generated estimate</span>
+        </div>
+        <p class="result__value" id="resultValue">0</p>
+        <dl class="kv kv--inline">
+          <div class="kv__row"><dt>Model Used</dt><dd id="resultModel">—</dd></div>
+          <div class="kv__row"><dt>Prediction Status</dt><dd id="resultStatus">—</dd></div>
+          <div class="kv__row"><dt>Prediction Time</dt><dd id="resultTime">—</dd></div>
+        </dl>
+        <div class="result__actions">
+          <button class="btn btn--ghost btn--sm" id="copyBtn">Copy result</button>
+        </div>
+      </div>
+
+      <div class="card card--inputs glass" data-animate>
+        <div class="card__head"><h3>Ad Spend Used</h3></div>
+        <div class="input-viz" id="inputViz">
+          <div class="input-viz__row">
+            <span>TV</span>
+            <div class="input-viz__bar-track"><div class="input-viz__bar" id="barTV"></div></div>
+            <strong id="valTV">0</strong>
+          </div>
+          <div class="input-viz__row">
+            <span>Radio</span>
+            <div class="input-viz__bar-track"><div class="input-viz__bar" id="barRadio"></div></div>
+            <strong id="valRadio">0</strong>
+          </div>
+          <div class="input-viz__row">
+            <span>Newspaper</span>
+            <div class="input-viz__bar-track"><div class="input-viz__bar" id="barNewspaper"></div></div>
+            <strong id="valNewspaper">0</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ANALYTICS OVERVIEW ============ -->
+    <section id="analytics" class="analytics">
+      <h3 class="section-label">Analytics Overview</h3>
+      <div class="analytics__grid" id="analyticsGrid">
+        <div class="stat-card glass"><span class="stat-card__label">Model</span><span class="stat-card__value is-placeholder" id="statModel">Waiting for prediction</span></div>
+        <div class="stat-card glass"><span class="stat-card__label">Prediction Status</span><span class="stat-card__value is-placeholder" id="statStatus">Waiting for prediction</span></div>
+        <div class="stat-card glass"><span class="stat-card__label">TV Spend</span><span class="stat-card__value is-placeholder" id="statTV">Waiting for prediction</span></div>
+        <div class="stat-card glass"><span class="stat-card__label">Radio Spend</span><span class="stat-card__value is-placeholder" id="statRadio">Waiting for prediction</span></div>
+        <div class="stat-card glass"><span class="stat-card__label">Newspaper Spend</span><span class="stat-card__value is-placeholder" id="statNewspaper">Waiting for prediction</span></div>
+      </div>
+    </section>
+
+    <!-- ============ HISTORY ============ -->
+    <section class="history">
+      <div class="history__head">
+        <h3 class="section-label">Recent Predictions</h3>
+        <button class="btn btn--text btn--sm" id="clearHistoryBtn">Clear history</button>
+      </div>
+      <ul class="history__list" id="historyList">
+        <li class="history__empty" id="historyEmpty">No predictions yet this session.</li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <p>SalesAI — a machine learning dashboard built on a FastAPI regression pipeline.</p>
+</footer>
+
+<div class="toast-stack" id="toastStack" aria-live="assertive"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
